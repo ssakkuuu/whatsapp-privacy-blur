@@ -7,22 +7,6 @@
 @homepageURL    https://github.com/ssakkuuu/whatsapp-privacy-blur
 ==/UserStyle== */
 
-/*
-   Changelog
-   ---------
-   1.1.0 - Message bubbles, the chat header (name + participant list) and
-           system announcements ("... changed to ...", "You changed this
-           group's icon", date separators, etc.) are now blurred too, on
-           top of the chat list and media/stickers from 1.0.0. Their blur
-           amount is driven by the --wa-msg-blur CSS variable so the
-           companion Tampermonkey script below can reveal/hide all three
-           at once with a single click, right next to the chat-list menu.
-           Get the toggle script here:
-           https://github.com/ssakkuuu/whatsapp-privacy-blur
-   1.0.0 - Initial plain-CSS release: chat list, media and stickers
-           blurred; message text blurred with hover-to-reveal.
-*/
-
 @-moz-document domain("web.whatsapp.com") {
 
     /* margin fix */
