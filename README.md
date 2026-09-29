@@ -9,7 +9,7 @@ This is two small pieces that work together:
 
 ## Screenshots
 
-![Chats blurred](https://photos.app.goo.gl/VuuHBx1vAnyD81YTA)
+![Chats blurred](assets/Screenshot 2026-09-29 112208.png)
 ![Chats blurred with zoom on the toggle button](https://photos.app.goo.gl/JCyEKoe8skFFZ435A)
 
 | File | What it does | Installed with |
