@@ -1,0 +1,143 @@
+/* ==UserStyle==
+@name           Better Whatsapp Privacy V2 (with message blur)
+@namespace      sakkuuu
+@version        1.1.0
+@description    Ultimate privacy and UI adjustments - a fork from "Jamir-boop". Blurs the chat list, media, message bubbles, chat header and system announcements. Works with a companion Tampermonkey script that adds a one-click reveal/hide toggle button.
+@author         sakkuuu
+@homepageURL    https://github.com/ssakkuuu/whatsapp-privacy-blur
+==/UserStyle== */
+
+/*
+   Changelog
+   ---------
+   1.1.0 - Message bubbles, the chat header (name + participant list) and
+           system announcements ("... changed to ...", "You changed this
+           group's icon", date separators, etc.) are now blurred too, on
+           top of the chat list and media/stickers from 1.0.0. Their blur
+           amount is driven by the --wa-msg-blur CSS variable so the
+           companion Tampermonkey script below can reveal/hide all three
+           at once with a single click, right next to the chat-list menu.
+           Get the toggle script here:
+           https://github.com/ssakkuuu/whatsapp-privacy-blur
+   1.0.0 - Initial plain-CSS release: chat list, media and stickers
+           blurred; message text blurred with hover-to-reveal.
+*/
+
+@-moz-document domain("web.whatsapp.com") {
+
+    /* margin fix */
+    div[id="app"] > div > div[tabindex="-1"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        position: absolute;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    /* ------------------------------------------------------------
+       1) Chat list (left bar): light blur, reveal on hover
+       ------------------------------------------------------------ */
+    :is(
+        div.false div[tabindex="-1"] div[style *= "z-index"],
+        div[id="app"] div[style *= "z-index"]:not(div#expressions-panel-container div)
+    ) {
+        transition: .2s ease !important;
+        filter: blur(5px) !important;
+    }
+    :is(
+        div.false div[tabindex="-1"] div[style *= "z-index"],
+        div[id="app"] div[style *= "z-index"]:not(div#expressions-panel-container div)
+    ):hover {
+        filter: blur(0px) grayscale(0) !important;
+    }
+
+    /* ------------------------------------------------------------
+       2) Media, stickers, info panel, searches: strong blur + grey
+       ------------------------------------------------------------ */
+    :is(
+        [data-testid="image-album"] [data-testid="image-thumb"],
+        [data-testid="msg-container"] img[src^="blob:"],
+        [data-testid="msg-container"] [data-testid="video-content"],
+        [data-testid="quoted-message"] [data-testid="media-url-provider"],
+        [data-testid="quoted-message"] [style^="background-image: "],
+        [data-testid="sticker-container"] img[src^="blob:"]:not([class*="emoji"]):not([src*='/pp?']),
+        [data-testid="media-gallery"] [role="listitem"][data-testid="media-canvas"],
+        [data-testid="link-gallery-msg"],
+        [data-testid="doc-gallery"],
+        [data-testid="chat-info-drawer"] span[dir="auto"][class*="copyable-text"],
+        [aria-label="Media list"] [data-testid="media-canvas"],
+        [data-testid="media-hub-modal"] div[data-testid="media-canvas-img"],
+        [aria-label="Recent searches"] [data-testid="recent-search-item"],
+        span._ao3e.selectable-text.copyable-text[dir="auto"] > div
+    ) {
+        transition: .2s ease !important;
+        filter: blur(10px) grayscale(1) !important;
+    }
+    :is(
+        [data-testid="image-album"] [data-testid="image-thumb"],
+        [data-testid="msg-container"] img[src^="blob:"],
+        [data-testid="msg-container"] [data-testid="video-content"],
+        [data-testid="quoted-message"] [data-testid="media-url-provider"],
+        [data-testid="quoted-message"] [style^="background-image: "],
+        [data-testid="sticker-container"] img[src^="blob:"]:not([class*="emoji"]):not([src*='/pp?']),
+        [data-testid="media-gallery"] [role="listitem"][data-testid="media-canvas"],
+        [data-testid="link-gallery-msg"],
+        [data-testid="doc-gallery"],
+        [data-testid="chat-info-drawer"] span[dir="auto"][class*="copyable-text"],
+        [aria-label="Media list"] [data-testid="media-canvas"],
+        [data-testid="media-hub-modal"] div[data-testid="media-canvas-img"],
+        [aria-label="Recent searches"] [data-testid="recent-search-item"],
+        span._ao3e.selectable-text.copyable-text[dir="auto"] > div
+    ):hover {
+        filter: blur(0px) grayscale(0) !important;
+    }
+
+    /* ------------------------------------------------------------
+       3) Whole message bubble (text, sender name, time, edges)
+          blurred as one soft shape, so no sharp box is visible.
+          Hover the bubble to reveal it.
+       ------------------------------------------------------------ */
+    [data-testid="msg-container"] {
+        transition: .2s ease !important;
+        filter: blur(var(--wa-msg-blur, 6px)) !important;
+    }
+    [data-testid="msg-container"]:hover {
+        filter: blur(0px) !important;
+    }
+
+    /* ------------------------------------------------------------
+       4) Announcements (e.g. "+687... changed to +33...", "You changed
+          this group's icon"): any row in the open chat that is NOT a
+          normal message bubble. Hover to reveal.
+          (Date separators like 8/26/2026 are blurred too.)
+       ------------------------------------------------------------ */
+    #main div.focusable-list-item:not(:has([data-testid="msg-container"])) {
+        transition: .2s ease !important;
+        filter: blur(var(--wa-msg-blur, 5px)) !important;
+    }
+    #main div.focusable-list-item:not(:has([data-testid="msg-container"])):hover {
+        filter: blur(0px) !important;
+    }
+
+    /* ------------------------------------------------------------
+       5) Chat header: group / contact name + the line under it
+          (participant names). Hover to reveal.
+       ------------------------------------------------------------ */
+    #main header :is(
+        [data-testid="conversation-info-header-chat-title"],
+        [data-testid="chat-subtitle"],
+        span[title]:not([data-icon]):not(button *)
+    ) {
+        transition: .2s ease !important;
+        filter: blur(var(--wa-msg-blur, 6px)) !important;
+    }
+    #main header :is(
+        [data-testid="conversation-info-header-chat-title"],
+        [data-testid="chat-subtitle"],
+        span[title]:not([data-icon]):not(button *)
+    ):hover {
+        filter: blur(0px) !important;
+    }
+}
