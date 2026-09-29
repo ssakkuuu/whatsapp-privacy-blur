@@ -1,7 +1,7 @@
 # WhatsApp Web Privacy Blur
 
 Blurs your WhatsApp Web chat list, message bubbles, chat header (name +
-participant list), media/stickers, and system announcements — so nothing
+participant list), media/stickers, and system announcements - so nothing
 private is visible over your shoulder. Hover any single item to peek at it,
 or click one button to reveal (or re-hide) everything at once.
 
@@ -57,8 +57,8 @@ Reload `web.whatsapp.com`. You should see:
 - Everything runs entirely in your own browser. No data leaves your machine.
 
 ## Changelog
-- **1.1.0** — Message bubbles, chat header, and system announcements are now
+- **1.1.0** - Message bubbles, chat header, and system announcements are now
   blurred (previously just message text and media). Blur amount is driven
   by a CSS variable so the toggle script can control it.
-- **1.0.0** — Initial release: chat list, media, and stickers blurred;
+- **1.0.0** - Initial release: chat list, media, and stickers blurred;
   message text blurred with hover-to-reveal.
